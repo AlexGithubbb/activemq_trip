@@ -42,6 +42,15 @@ public class QueueConsumer {
                         e.printStackTrace();
                     }
                 }
+                if (message != null && message instanceof MapMessage) {
+                    MapMessage mapMessage = (MapMessage) message;
+                    try {
+                        System.out.println("consumed message: " + mapMessage.getString("k1"));
+                        System.out.println(mapMessage.getStringProperty("kk"));
+                    } catch (JMSException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
         System.in.read(); // keep reading in back

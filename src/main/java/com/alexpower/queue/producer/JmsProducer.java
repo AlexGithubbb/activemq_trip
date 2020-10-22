@@ -26,7 +26,13 @@ public class JmsProducer {
         // send message
         for (int i = 1; i <= 3; i++) {
             TextMessage textMessage = session.createTextMessage("textMessage ---" + i);
+            textMessage.setStringProperty("007", "vip property text message");
             producer.send(textMessage);
+
+            MapMessage mapMessage = session.createMapMessage();
+            mapMessage.setString("k1", "mapMessage --- v1");
+            mapMessage.setStringProperty("kk", "vip property map message");
+            producer.send(mapMessage);
         }
 
         producer.close();
