@@ -7,8 +7,11 @@ import javax.xml.soap.Text;
 import java.io.IOException;
 
 /*
- *  消费方式二： 监听器机制，异步非阻塞
- *   two listeners : 底层轮询机制 ： 7 messages in total : ListenerA - (1,3,5,7), ListenerB - (2,4,6)
+ *  。在事务性会话中， 当一个事务被成功提交则消息被自动签收
+ *    如果事务回滚，消息会被再次传送
+ *  。在非事务性会话中，消息何时被确认取决于是自动签收还是手动签收（手动时需要显式调用acknowledge() 方法)
+ *
+ * transacted > acknowledge
  *
  * */
 public class QueueConsumer_transaction {
@@ -23,7 +26,7 @@ public class QueueConsumer_transaction {
         // start connection up
         connection.start();
         // create session
-        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
 
         // crate destination
         Queue queue = session.createQueue(QUEUE_NAME);
@@ -36,15 +39,14 @@ public class QueueConsumer_transaction {
             Message message = consumer.receive(3000L);
             if(message != null){
                 TextMessage textMessage = (TextMessage) message;
-                textMessage.acknowledge();
+//                textMessage.acknowledge();
                 System.out.println("consume text " + textMessage.getText());
-                 // wait for 3s and terminate
             }else{
                 break;
             }
         }
         consumer.close();
-//        session.commit();
+        session.commit();
         session.close();
         connection.close();
         System.out.println("******* messages have been received from queue_trasc");
