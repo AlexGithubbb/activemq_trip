@@ -15,6 +15,7 @@ public class JmsProducer {
         // start connection up
         connection.start();
         // create session
+        // two params: 1st is transaction, 2nd is acknowledge
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         // crate destination
@@ -22,6 +23,11 @@ public class JmsProducer {
 
         // create producer and point out the destination
         MessageProducer producer = session.createProducer(queue);
+        // persistent, message still alive even MQ is down (by default)
+//        producer.setDeliveryMode(DeliveryMode.PERSISTENT);
+
+        // non-persistent, message will be  gone if MQ is down
+//        producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
         // send message
         for (int i = 1; i <= 3; i++) {
