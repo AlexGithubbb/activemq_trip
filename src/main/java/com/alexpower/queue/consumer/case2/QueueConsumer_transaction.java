@@ -23,7 +23,7 @@ public class QueueConsumer_transaction {
         // start connection up
         connection.start();
         // create session
-        Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         // crate destination
         Queue queue = session.createQueue(QUEUE_NAME);
@@ -36,6 +36,7 @@ public class QueueConsumer_transaction {
             Message message = consumer.receive(3000L);
             if(message != null){
                 TextMessage textMessage = (TextMessage) message;
+                textMessage.acknowledge();
                 System.out.println("consume text " + textMessage.getText());
                  // wait for 3s and terminate
             }else{
@@ -43,7 +44,7 @@ public class QueueConsumer_transaction {
             }
         }
         consumer.close();
-        session.commit();
+//        session.commit();
         session.close();
         connection.close();
         System.out.println("******* messages have been received from queue_trasc");
