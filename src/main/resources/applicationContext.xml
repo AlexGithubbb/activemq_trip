@@ -38,5 +38,12 @@
         </property>
      </bean>
 
+    <!-- Import jms listener in jms container-->
+    <bean id="jsmContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsFactory"></property>
+        <property name="destination" ref="destinationTopic"></property>
+        <property name="messageListener" ref="myMessageListener"></property>
+    </bean>
+
 
 </beans>
