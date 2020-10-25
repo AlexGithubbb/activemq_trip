@@ -26,9 +26,13 @@
         <constructor-arg index="0" value="spring-active-queue" />
     </bean>
 
+    <bean id="destinationTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg index="0" value="spring-active-topic" />
+    </bean>
+
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="connectionFactory" ref="jmsFactory"></property>
-        <property name="defaultDestination" ref="destinationQueue"></property>
+        <property name="defaultDestination" ref="destinationTopic"></property>
         <property name="messageConverter">
             <bean class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
         </property>
