@@ -15,8 +15,8 @@ import java.io.IOException;
  *
  * */
 public class QueueConsumer_transaction {
-    public static final String BROKER_URL = "tcp://127.0.0.1:61616";
-    public static final String QUEUE_NAME = "queue_trasc";
+    public static final String BROKER_URL = "nio://127.0.0.1:61618";
+    public static final String QUEUE_NAME = "jdbc_queue";
 
     public static void main(String[] args) throws JMSException, IOException {
         System.out.println("this is consumer1 ");

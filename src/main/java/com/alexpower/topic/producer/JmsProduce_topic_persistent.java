@@ -6,7 +6,7 @@ import javax.jms.*;
 
 public class JmsProduce_topic_persistent {
     public static final String BROKER_URL = "tcp://127.0.0.1:61616";
-    public static final String TOPIC_NAME = "Topic_persist";
+    public static final String TOPIC_NAME = "Topic_persist_jdbc";
 
     public static void main(String[] args) throws JMSException {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(BROKER_URL);

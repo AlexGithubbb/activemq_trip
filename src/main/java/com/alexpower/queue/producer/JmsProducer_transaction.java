@@ -4,9 +4,9 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-public class JmsProducer_tracsaction {
-    public static final String BROKER_URL = "tcp://127.0.0.1:61616";
-    public static final String QUEUE_NAME = "queue_trasc";
+public class JmsProducer_transaction {
+    public static final String BROKER_URL = "nio://127.0.0.1:61618"; // add nio protocol in Activemq_home/conf/activemq.xml
+    public static final String QUEUE_NAME = "jdbc_queue";
 
     public static void main(String[] args) throws JMSException {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(BROKER_URL);
@@ -18,11 +18,13 @@ public class JmsProducer_tracsaction {
         Queue queue = session.createQueue(QUEUE_NAME);
 
         MessageProducer producer = session.createProducer(queue);
+        // need when integrated with outer db
+        producer.setDeliveryMode(DeliveryMode.PERSISTENT);
 
 
         // send message
-        for (int i = 1; i <= 3; i++) {
-            TextMessage textMessage = session.createTextMessage("tx msg---" + i);
+        for (int i = 1; i <= 6; i++) {
+            TextMessage textMessage = session.createTextMessage("jdbc msg---" + i);
             producer.send(textMessage);
         }
 

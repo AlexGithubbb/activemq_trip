@@ -1,0 +1,43 @@
+-----------  iomplement JDBC - MySQL db -----------
+1. add jar file(mysql-connector-java-8.0.15) in activemq/lib/
+2. configure below in activemq.xml:
+    introuduce persistence
+        <persistenceAdapter>
+            <jdbcPersistenceAdapter dataSource="#mysql-ds" createTablesOnStartup="true"/>
+        </persistenceAdapter>
+
+    introuduce db info:
+    inside </beans> tag, after </broker> tag
+        <bean id="mysql-ds" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/activemq?relaxAutoCommit=true"/>
+            <property name="username" value="root"/>
+            <property name="password" value="admin"/>
+            <property name="poolPreparedStatements" value="true"/>
+        </bean>
+
+
+----------- implement Journal fast cache system instead of JDBC directly --------------
+activemq will talk to journal first, then message/data will be transferred from journal to mysql
+1. configure below in activemq.xml
+    introuduce journal info:
+       <persistenceFactory>
+              <journalPersistenceAdapterFactory
+                  journalLogFiles="5"
+                  journalLogFileSize="32768"
+                  useJournal="true"
+                  useQuickJournal="true"
+                  dataDirectory="activemq-data"
+                  dataSource="#mysql-ds"
+              />
+        </persistenceFactory>
+
+    introuduce db info:
+    inside </beans> tag, after </broker> tag
+        <bean id="mysql-ds" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/activemq?relaxAutoCommit=true"/>
+            <property name="username" value="root"/>
+            <property name="password" value="admin"/>
+            <property name="poolPreparedStatements" value="true"/>
+        </bean>
